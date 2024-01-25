@@ -1,6 +1,7 @@
 import datetime as datetime
 import struct
 
+from dataclasses import dataclass
 import numpy as np
 
 _Raw8_Fields = [
@@ -57,13 +58,14 @@ _Raw8_Fields = [
 ]
 
 
-def PlanckFunction(temp: float, wl: np.array):
+def plank_function(temp: float, wl: np.array):
     c = 3e8  # speed of light [m s**−1]
     h = 6.625e-34  # Planck constant [J s]
     kb = 1.38e-23  # Boltzmann constant [J K**−1]
     return ((2 * h * c**2) / (wl**5)) * 1.0 / (np.exp((h * c) / (wl * kb * temp)) - 1)
 
 
+@dataclass
 class Raw8:
     def __init__(self, filename: str):
         self.header = {}
@@ -74,40 +76,47 @@ class Raw8:
                 if len(dat) == 1:
                     dat = dat[0]
                 self.header[k[0]] = dat
-            dataLength = self.header["stopPixel"] - self.header["startPixel"] + 1
-            self.dataLength = dataLength
+            data_length = self.header["stopPixel"] - self.header["startPixel"] + 1
+            self.data_length = data_length
             self.data = {
-                "wl": struct.unpack(f"<{dataLength}f", f.read(4 * dataLength)),
-                "scope": struct.unpack(f"<{dataLength}f", f.read(4 * dataLength)),
-                "dark": struct.unpack(f"<{dataLength}f", f.read(4 * dataLength)),
-                "ref": struct.unpack(f"<{dataLength}f", f.read(4 * dataLength)),
+                "wl": struct.unpack(f"<{data_length}f", f.read(4 * data_length)),
+                "scope": struct.unpack(f"<{data_length}f", f.read(4 * data_length)),
+                "dark": struct.unpack(f"<{data_length}f", f.read(4 * data_length)),
+                "ref": struct.unpack(f"<{data_length}f", f.read(4 * data_length)),
             }
 
-    def getData(self, name: str):
+    def get_data(self, name: str):
         return np.array(self.data[name])
 
-    def getScope(self):
-        return self.getData("scope")
+    @property
+    def scope(self):
+        return self.get_data("scope")
 
-    def getWavelength(self):
-        return self.getData("wl")
+    @property
+    def wavelength(self):
+        return self.get_data("wl")
 
-    def getDark(self):
-        return self.getData("dark")
+    @property
+    def dark(self):
+        return self.get_data("dark")
 
-    def getRef(self):
-        return self.getData("ref")
+    @property
+    def ref(self):
+        return self.get_data("ref")
 
-    def getBlackBody(self):
-        return PlanckFunction(self.header["ColorTemp"], self.getWavelength() * 1e-9)
+    @property
+    def black_body(self):
+        return plank_function(self.header["ColorTemp"], self.wavelength * 1e-9)
 
-    def getRelativeIrradiance(self):
-        return self.getBlackBody() * (self.getScope() - self.getDark())
+    @property
+    def relative_irradiance(self):
+        return self.black_body * (self.scope - self.dark)
 
     # This is from the manual: http://www.content.mphotonics.de/AVA/AVASOFT_Manual_8.4.pdf
     # Page 35. But I'm not conviced that this is correct
 
-    def getDate(self):
+    @property
+    def date(self):
         d = self.header["SPCfiledate"]
         return {
             "year": d >> 20,
@@ -117,8 +126,9 @@ class Raw8:
             "minute": d % (2**6),
         }
 
-    def getDatetime(self):
-        d = self.getDate()
+    @property
+    def datetime(self):
+        d = self.date
         return datetime.datetime(
             d["year"], d["month"], d["day"], d["hour"], d["minute"]
         )
