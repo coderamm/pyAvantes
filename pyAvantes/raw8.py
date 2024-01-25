@@ -75,6 +75,8 @@ class Raw8:
                 dat = s.unpack(f.read(s.size))
                 if len(dat) == 1:
                     dat = dat[0]
+                if "s" in k[1]:
+                    dat = dat.decode("latin1").split("\x00")[0]
                 self.header[k[0]] = dat
             data_length = self.header["stopPixel"] - self.header["startPixel"] + 1
             self.data_length = data_length
@@ -114,6 +116,153 @@ class Raw8:
 
     # This is from the manual: http://www.content.mphotonics.de/AVA/AVASOFT_Manual_8.4.pdf
     # Page 35. But I'm not conviced that this is correct
+
+    def get_header(self, name: str):
+        return self.header[name]
+
+    @property
+    def version(self):
+        return self.get_header("version")
+
+    @property
+    def num_spectra(self):
+        return self.get_header("numSpectra")
+
+    @property
+    def length(self):
+        return self.get_header("length")
+
+    @property
+    def sequence_number(self):
+        return self.get_header("seqNum")
+
+    @property
+    def measurement_mode(self):
+        return self.get_header("measMode")
+
+    @property
+    def bitness(self):
+        return self.get_header("bitness")
+
+    @property
+    def SD_marker(self):
+        return self.get_header("SDmarker")
+
+    @property
+    def specID(self):
+        return self.get_header("specID")
+
+    @property
+    def user_friendly_name(self):
+        return self.get_header("userfriendlyname")
+
+    @property
+    def status(self):
+        return self.get_header("status")
+
+    @property
+    def start_pixel(self):
+        return self.get_header("startPixel")
+
+    @property
+    def stop_pixel(self):
+        return self.get_header("stopPixel")
+
+    @property
+    def integration_time(self):
+        return self.get_header("intTime")
+
+    @property
+    def integration_delay(self):
+        return self.get_header("integrationdelay")
+
+    @property
+    def average(self):
+        return self.get_header("Avg")
+
+    @property
+    def enable(self):
+        return self.get_header("enable")
+
+    @property
+    def forget_percentage(self):
+        return self.get_header("forgetPercentage")
+
+    @property
+    def boxcar(self):
+        return self.get_header("Boxcar")
+
+    @property
+    def smooth_model(self):
+        return self.get_header("smoothmodel")
+
+    @property
+    def saturation_detection(self):
+        return self.get_header("saturationdetection")
+
+    @property
+    def trigger_mode(self):
+        return self.get_header("TrigMode")
+
+    @property
+    def trigger_source(self):
+        return self.get_header("TrigSource")
+
+    @property
+    def trigger_type(self):
+        return self.get_header("TrigSourceType")
+
+    @property
+    def strobe_control(self):
+        return self.get_header("strobeCtrl")
+
+    @property
+    def laser_delay(self):
+        return self.get_header("laserDelay")
+
+    @property
+    def laser_width(self):
+        return self.get_header("laserWidth")
+
+    @property
+    def laser_wavelength(self):
+        return self.get_header("laserWavelength")
+
+    @property
+    def store2ram(self):
+        return self.get_header("store2ram")
+
+    @property
+    def SPCfiledate(self):
+        return self.get_header("SPCfiledate")
+
+    @property
+    def detector_temp(self):
+        return self.get_header("detectorTemp")
+
+    @property
+    def board_temp(self):
+        return self.get_header("boardTemp")
+
+    @property
+    def NTC2volt(self):
+        return self.get_header("NTC2volt")
+
+    @property
+    def color_temp(self):
+        return self.get_header("ColorTemp")
+
+    @property
+    def calibration_integration_time(self):
+        return self.get_header("CalIntTime")
+
+    @property
+    def calibration_constants(self):
+        return self.get_header("fitdata")
+
+    @property
+    def comment(self):
+        return self.get_header("comment")
 
     @property
     def date(self):
