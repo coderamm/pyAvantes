@@ -1,3 +1,6 @@
+# NOTICE: This is a modified version from scholi/pyAvantes/pyAvantes/raw8.py
+# See the NOTICE at the repository top level for a description of changes.
+
 import datetime as datetime
 import struct
 
