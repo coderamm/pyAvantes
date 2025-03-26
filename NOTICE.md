@@ -1,15 +1,7 @@
-This repository has been modified from its original form, released under the
-Apache 2.0 license.
+This repository is a fork of [davidcurie/pyAvantes](https://github.com/davidcurie/pyAvantes), which is itself a fork of [scholi/pyAvantes](https://github.com/scholi/pyAvantes).
 
-Source: https://github.com/scholi/pyAvantes
-Author: scholi
-
-The changes in this repository serve the following goals:
-
-- Use dataclass attributes instead of getter and setter methods
-- Reformat code according to
-  [black](https://black.readthedocs.io/en/stable/index.html) standards
-- Add more header extraction mechanisms
+The original repository is licensed under the Apache License 2.0. The license can be found in the `LICENSE` file.
 
 A full list of changes can be inspected at any time by looking at the difference
-between the head of this repository and the latest head from scholi/pyAvantes.
+between the head of this repository and the latest head from scholi/pyAvantes or
+davidcurie/pyAvantes.
