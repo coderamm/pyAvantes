@@ -33,7 +33,7 @@ _Raw8_Fields = [
     ("status", "B"),
     ("startPixel", "H"),
     ("stopPixel", "H"),
-    ("IntTime", "f"),
+    ("integrationTime", "f"),
     ("integrationdelay", "I"),
     ("Avg", "I"),
     ("enable", "B"),
@@ -173,7 +173,7 @@ class Raw8:
 
     @property
     def integration_time(self):
-        return self.get_header("intTime")
+        return self.get_header("integrationTime")
 
     @property
     def integration_delay(self):
