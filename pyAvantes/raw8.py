@@ -204,6 +204,10 @@ class Raw8:
         return self.get_header("saturationdetection")
 
     @property
+    def timestamp(self):
+        return self.get_header("timestamp")
+
+    @property
     def trigger_mode(self):
         return self.get_header("TrigMode")
 
