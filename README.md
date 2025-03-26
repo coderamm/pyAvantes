@@ -2,6 +2,13 @@
 
 This python package allows you to view and parse Avantes raw8 spectra.
 
+## Installation
+
+This Python library can be installed by running the `setup.py` file with the `install` option:
+```powershell
+python setup.py install 
+```
+
 ## Example
 
 Once it is loaded as a Raw8 object, the raw spectrum data is stored
