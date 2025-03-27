@@ -7,7 +7,7 @@ This python package allows you to view and parse Avantes raw8 spectra.
 This Python library can be installed by cloning this repository and then running the `setup.py` file with the `install` option:
 ```bash
 python setup.py install 
-```v
+```
 This package requires `setuptools`. 
 
 ## Example
